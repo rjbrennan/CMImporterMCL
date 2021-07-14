@@ -82,7 +82,7 @@ public class Map {
 	 * @param pGamma	Inflation value for Markov Clustering
 	 * @throws IOException
 	 */
-	public void execute(File output, int pGamma) throws IOException {
+	public void execute(File output, double pGamma) throws IOException {
 		
 		this.cluBuilder(pGamma);
 		
