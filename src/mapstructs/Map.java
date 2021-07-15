@@ -11,11 +11,7 @@ import annexFunctions.fileFunctions;
 import net.sf.javaml.clustering.mcl.MarkovClustering;
 import net.sf.javaml.clustering.mcl.SparseMatrix;
 
-/**
- * 
- * @author Riordan Brennan
- *
- */
+
 public class Map {
 	
 	final static int MARGIN = 7;

@@ -1,6 +1,5 @@
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +17,11 @@ import javax.swing.border.TitledBorder;
 import fileChooser.CustomFileChooser;
 import mapstructs.Map;
 
+/**
+ * Front end of program and calls to back end
+ * @author rjbrennan
+ *
+ */
 public class Importer {
 	
 	private static File output;
@@ -26,6 +30,7 @@ public class Importer {
 	public static void main(String[] args) throws IOException, InvocationTargetException, InterruptedException {
 		
 		//Prompts user to choose a folder of .cxl files they would like to combine
+		//EventQueue used to fix error where UI wouldn't appear
 		EventQueue.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
@@ -39,14 +44,15 @@ public class Importer {
 			}
 		});
 		
-		
+		//Creates Map object
 		Map map = new Map(input);
 		
-		//Prompts user to enter the topic of the maps
+		//Prompts user to enter the topic of the maps, tests whether topic is in the map
 		String topic = JOptionPane.showInputDialog("Enter the topic");
 		while(!map.inMap(topic)) {	
 			topic = JOptionPane.showInputDialog("That topic did not match any concepts, please try again");
 		}
+		//Prompts user to choose pGamma value with a slider
 		double pGamma = 0;
 		while(pGamma<=0) {
 			JFrame frame = new JFrame();
@@ -75,6 +81,8 @@ public class Importer {
 		pGamma = pGamma/10;
 		
 		// FIXME if you write the name of another file, it just does filename..cxl
+		//Prompts user to save output file
+		//EventQueue used to fix error where UI wouldn't show up
 		System.out.println("Got this far");
 		EventQueue.invokeAndWait(new Runnable() {
             @Override
@@ -86,10 +94,17 @@ public class Importer {
             }
         });
 
+		//Execute map clustering and file building
 		map.execute(output, pGamma);
 
 	}
 	
+	/**
+	 * Creates JSlider object
+	 * @param min	Minimum input value
+	 * @param max	Maximum input value
+	 * @return	The resulting JSlider object
+	 */
 	private static JSlider createSlider(int min, int max) {
 		JSlider slider = new JSlider(min, max);
 		slider.setMajorTickSpacing(10);
@@ -104,6 +119,12 @@ public class Importer {
 		return slider;
 	}
 	
+	/**
+	 * Creates JPanel with JSlider inside
+	 * @param slider	Slider to place
+	 * @param label		Title of panel
+	 * @return	The resulting JPanel object
+	 */
 	public static JPanel createSliderPanel(final JSlider slider, String label) {
         final JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
