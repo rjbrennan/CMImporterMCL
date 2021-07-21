@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import annexFunctions.arrayFunctions;
 import annexFunctions.fileFunctions;
+import annexFunctions.stringFunctions;
 import net.sf.javaml.clustering.mcl.MarkovClustering;
 import net.sf.javaml.clustering.mcl.SparseMatrix;
 
@@ -114,12 +115,13 @@ public class Map {
 	 * @param concepts	string of .cxl concepts, created by cncStrip()
 	 */
 	private void cncReader(String concepts) {
-		String id; String name;
+		String id; String name; String[] names;
 		
 		while(concepts.indexOf("<concept") >= 0) {
 			concepts = concepts.substring(concepts.indexOf("<concept")+8);
 			id = concepts.substring(concepts.indexOf("id=")+4, concepts.indexOf("\" "));
 			name = concepts.substring(concepts.indexOf("label=")+7, concepts.indexOf("\"/"));
+			names = stringFunctions.splitCnc(name);
 			if(!Concept.includes(this.concepts, name, id))
 				this.concepts.add(new Concept(name, id));
 		}
@@ -160,22 +162,9 @@ public class Map {
 		SparseMatrix matrix = new SparseMatrix(cncGrid);
 		matrix = mcl.run(matrix, 0.01, pGamma, 1, 0.01);
 		
-		//System.out.println(matrix);
-		
-		//System.out.println(arrayFunctions.print(matrix.getSize()));
-		
 		cncGrid = matrix.getDense();
 		
 		cncGrid = arrayFunctions.transposeMatrix(cncGrid);
-		
-		//System.out.println(printConcepts());
-		
-		/*for(double[] row : cncGrid)
-		{
-			for(double num : row)
-				System.out.print(num+",");
-			System.out.print("\n");
-		}*/
 		
 		Cluster temp = null;
 		for(int i = 0; i<cncGrid.length; i++)

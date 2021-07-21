@@ -33,7 +33,7 @@ public class fileFunctions {
 		
 		String concepts = cxl.substring(cncStart+16, cncEnd);
 		
-		return concepts.trim();
+		return concepts.trim().toLowerCase();
 	}
 	
 	/**
@@ -44,11 +44,13 @@ public class fileFunctions {
 	public static String cnnStrip(String cxl) {
 		
 		int cnnStart = cxl.indexOf("<connection-list>");
+		if(cnnStart==-1)
+			return "";
 		int cnnEnd = cxl.indexOf("</connection-list>");
 		
 		String connections = cxl.substring(cnnStart+19, cnnEnd);
 		
-		return connections.trim();
+		return connections.trim().toLowerCase();
 	}
 
 }
